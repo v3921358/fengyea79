@@ -1,5 +1,6 @@
 package database;
 
+import javax.xml.crypto.Data;
 import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Collection;
@@ -99,7 +100,7 @@ public class DatabaseConnection
                 System.err.println("加载数据库配置出错，请检查" + ex);
             }
             DatabaseConnection.dbDriver = "com.mysql.jdbc.Driver";
-            DatabaseConnection.dbName = "maplestory";
+            DatabaseConnection.dbName = DatabaseConnection.dbProps.getProperty("FengYeDuan.db.name");
             DatabaseConnection.dbHost = DatabaseConnection.dbProps.getProperty("FengYeDuan.db.host");
             DatabaseConnection.dbPort = DatabaseConnection.dbProps.getProperty("FengYeDuan.db.port");
             DatabaseConnection.dbUrl = "jdbc:mysql://" + DatabaseConnection.dbHost + ":" + DatabaseConnection.dbPort + "/" + DatabaseConnection.dbName + "?useUnicode=true&characterEncoding=UTF8";

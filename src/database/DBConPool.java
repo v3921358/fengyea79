@@ -14,7 +14,7 @@ public class DBConPool
     public static int dbport;
     
     public static void InitDB() {
-        DBConPool.dbName = "maplestory";
+        DBConPool.dbName = ServerProperties.getProperty("FengYeDuan.db.name", DBConPool.dbName);
         DBConPool.dbIp = ServerProperties.getProperty("FengYeDuan.db.ip", DBConPool.dbIp);
         DBConPool.dbport = ServerProperties.getProperty("FengYeDuan.db.port", DBConPool.dbport);
         DBConPool.dbUser = ServerProperties.getProperty("FengYeDuan.db.user", DBConPool.dbUser);
