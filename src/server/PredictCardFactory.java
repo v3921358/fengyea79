@@ -17,9 +17,9 @@ public class PredictCardFactory
     protected Map<Integer, PredictCardComment> predictCardComment;
     
     public PredictCardFactory() {
-        this.etcData = MapleDataProviderFactory.getDataProvider(new File("wz/Etc.wz"));
-        this.predictCard = new HashMap<Integer, PredictCard>();
-        this.predictCardComment = new HashMap<Integer, PredictCardComment>();
+        this.etcData = MapleDataProviderFactory.getDataProvider("Etc.wz");
+        this.predictCard = new HashMap<>();
+        this.predictCardComment = new HashMap<>();
     }
     
     public static PredictCardFactory getInstance() {

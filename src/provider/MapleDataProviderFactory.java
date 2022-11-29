@@ -6,7 +6,7 @@ import java.io.File;
 
 public class MapleDataProviderFactory
 {
-    private static final String wzPath;
+    private static final String wzPath = ServerProperties.getProperty("server.wzpath");
     
     private static MapleDataProvider getWZ(final Object in) {
         return getWZ(in, false);
@@ -29,10 +29,7 @@ public class MapleDataProviderFactory
     }
     
     public static File fileInWZPath(final String filename) {
-        return new File(MapleDataProviderFactory.wzPath, filename);
+        return new File(wzPath, filename);
     }
-    
-    static {
-        wzPath = ServerProperties.getProperty("server.wzpath", "wz");
-    }
+
 }

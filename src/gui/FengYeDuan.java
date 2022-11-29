@@ -13688,7 +13688,7 @@ for (int i = ((DefaultTableModel) (this.钓鱼物品.getModel())).getRowCount() 
                 ps = con.prepareStatement("SELECT * FROM skills  WHERE characterid =" + this.角色ID.getText() + "");
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    MapleDataProvider data = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/String.wz"));
+                    MapleDataProvider data = MapleDataProviderFactory.getDataProvider("String.wz");
                     MapleData itemsData;
                     int itemId;
                     String itemName = "";

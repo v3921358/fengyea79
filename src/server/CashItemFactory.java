@@ -1,26 +1,19 @@
 package server;
 
-import java.util.Map.Entry;
-import java.util.Collection;
-import java.sql.ResultSet;
-import java.sql.PreparedStatement;
-import java.sql.Connection;
-import tools.FileoutputUtil;
 import database.DBConPool;
-import java.util.Set;
-import java.util.Iterator;
-import provider.MapleDataTool;
 import provider.MapleData;
-import java.util.ArrayList;
-import java.io.File;
-import provider.MapleDataProviderFactory;
-import java.util.HashMap;
 import provider.MapleDataProvider;
-import java.util.List;
-import java.util.Map;
+import provider.MapleDataProviderFactory;
+import provider.MapleDataTool;
+import tools.FileoutputUtil;
 
-public class CashItemFactory
-{
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.*;
+import java.util.Map.Entry;
+
+public class CashItemFactory {
     private static final CashItemFactory instance;
     private static final int[] bestItems;
     private boolean initialized;
@@ -33,11 +26,11 @@ public class CashItemFactory
     private final MapleDataProvider data;
     private final MapleDataProvider itemStringInfo;
     private Map<Integer, Integer> idLookup;
-    
+
     public static final CashItemFactory getInstance() {
         return CashItemFactory.instance;
     }
-    
+
     protected CashItemFactory() {
         this.initialized = false;
         this.openBox = new HashMap<Integer, List<Integer>>();
@@ -47,10 +40,10 @@ public class CashItemFactory
         this.itemIdToSN = new HashMap<Integer, Integer>();
         this.itemIdToSn = new HashMap<Integer, Integer>();
         this.data = MapleDataProviderFactory.getDataProvider("Etc.wz");
-        this.itemStringInfo = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/String.wz"));
+        this.itemStringInfo = MapleDataProviderFactory.getDataProvider("String.wz");
         this.idLookup = new HashMap<Integer, Integer>();
     }
-    
+
     public void initialize() {
         System.out.println("[正在加载] -> 商城系统加载中请耐心等待");
         final List<Integer> itemids = new ArrayList<Integer>();
@@ -69,30 +62,30 @@ public class CashItemFactory
         this.refreshAllModInfo();
         final Iterator<Integer> iterator2 = itemids.iterator();
         while (iterator2.hasNext()) {
-            final int i = (int)Integer.valueOf(iterator2.next());
+            final int i = (int) Integer.valueOf(iterator2.next());
             this.getPackageItems(i);
         }
         final Iterator<Integer> iterator3 = this.itemStats.keySet().iterator();
         while (iterator3.hasNext()) {
-            final int i = (int)Integer.valueOf(iterator3.next());
+            final int i = (int) Integer.valueOf(iterator3.next());
             this.getModInfo(i);
             this.getItem(i);
         }
         this.initialized = true;
     }
-    
+
     public final int getSnByItemItd(final int itemid) {
-        final int sn = (int)Integer.valueOf(this.itemIdToSN.get(Integer.valueOf(itemid)));
+        final int sn = (int) Integer.valueOf(this.itemIdToSN.get(Integer.valueOf(itemid)));
         return sn;
     }
-    
+
     public final int getSnByItemItd2(final int itemid) {
-        final int sn = (int)Integer.valueOf(this.itemIdToSn.get(Integer.valueOf(itemid)));
+        final int sn = (int) Integer.valueOf(this.itemIdToSn.get(Integer.valueOf(itemid)));
         return sn;
     }
-    
+
     public final CashItemInfo getItem(final int sn) {
-        final CashItemInfo stats = (CashItemInfo)this.itemStats.get(Integer.valueOf(sn));
+        final CashItemInfo stats = (CashItemInfo) this.itemStats.get(Integer.valueOf(sn));
         final server.CashItemInfo.CashModInfo z = this.getModInfo(sn);
         if (z != null && z.showUp) {
             return z.toCItem(stats);
@@ -102,18 +95,18 @@ public class CashItemFactory
         }
         return stats;
     }
-    
+
     public final Set<Integer> getAllItemSNs() {
         return this.itemStats.keySet();
     }
-    
+
     public final List<CashItemInfo> getAllItems() {
         return new ArrayList<CashItemInfo>(this.itemStats.values());
     }
-    
+
     public final List<CashItemInfo> getPackageItems(final int itemId) {
         if (this.itemPackage.get(Integer.valueOf(itemId)) != null) {
-            return (List<CashItemInfo>)this.itemPackage.get(Integer.valueOf(itemId));
+            return (List<CashItemInfo>) this.itemPackage.get(Integer.valueOf(itemId));
         }
         final List<CashItemInfo> packageItems = new ArrayList<CashItemInfo>();
         final MapleData b = this.data.getData("CashPackage.img");
@@ -126,18 +119,18 @@ public class CashItemFactory
         this.itemPackage.put(Integer.valueOf(itemId), packageItems);
         return packageItems;
     }
-    
+
     public final Map<Integer, List<Integer>> getRandomItemInfo() {
         return this.openBox;
     }
-    
+
     public final server.CashItemInfo.CashModInfo getModInfo(final int sn) {
-        server.CashItemInfo.CashModInfo ret = (server.CashItemInfo.CashModInfo)this.itemMods.get(Integer.valueOf(sn));
+        server.CashItemInfo.CashModInfo ret = (server.CashItemInfo.CashModInfo) this.itemMods.get(Integer.valueOf(sn));
         if (ret == null) {
             if (this.initialized) {
                 return null;
             }
-            try (final Connection con = (Connection)DBConPool.getInstance().getDataSource().getConnection();
+            try (final Connection con = (Connection) DBConPool.getInstance().getDataSource().getConnection();
                  final PreparedStatement ps = con.prepareStatement("SELECT * FROM cashshop_modified_items WHERE serial = ?")) {
                 ps.setInt(1, sn);
                 final ResultSet rs = ps.executeQuery();
@@ -146,55 +139,53 @@ public class CashItemFactory
                     this.itemMods.put(Integer.valueOf(sn), ret);
                 }
                 rs.close();
-            }
-            catch (Exception e) {
-                FileoutputUtil.outError("logs/資料庫異常.txt", (Throwable)e);
+            } catch (Exception e) {
+                FileoutputUtil.outError("logs/資料庫異常.txt", (Throwable) e);
                 e.printStackTrace();
             }
         }
         return ret;
     }
-    
+
     private void refreshAllModInfo() {
         this.itemMods.clear();
         this.itemIdToSn.clear();
-        try (final Connection con = (Connection)DBConPool.getInstance().getDataSource().getConnection()) {
+        try (final Connection con = (Connection) DBConPool.getInstance().getDataSource().getConnection()) {
             final PreparedStatement ps = con.prepareStatement("SELECT * FROM cashshop_modified_items");
             final ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 final Integer sn = rs.getInt("serial");
-                final server.CashItemInfo.CashModInfo ret = new server.CashItemInfo.CashModInfo((int)sn, rs.getInt("discount_price"), rs.getInt("mark"), rs.getInt("showup") > 0, rs.getInt("itemid"), rs.getInt("priority"), rs.getInt("package") > 0, rs.getInt("period"), rs.getInt("gender"), rs.getInt("count"), rs.getInt("meso"), rs.getInt("unk_1"), rs.getInt("unk_2"), rs.getInt("unk_3"), rs.getInt("extra_flags"), rs.getInt("mod"));
+                final server.CashItemInfo.CashModInfo ret = new server.CashItemInfo.CashModInfo((int) sn, rs.getInt("discount_price"), rs.getInt("mark"), rs.getInt("showup") > 0, rs.getInt("itemid"), rs.getInt("priority"), rs.getInt("package") > 0, rs.getInt("period"), rs.getInt("gender"), rs.getInt("count"), rs.getInt("meso"), rs.getInt("unk_1"), rs.getInt("unk_2"), rs.getInt("unk_3"), rs.getInt("extra_flags"), rs.getInt("mod"));
                 this.itemMods.put(sn, ret);
                 this.itemIdToSn.put(Integer.valueOf(ret.itemid), sn);
             }
             rs.close();
             ps.close();
-        }
-        catch (Exception e) {
-            FileoutputUtil.outError("logs/資料庫異常.txt", (Throwable)e);
+        } catch (Exception e) {
+            FileoutputUtil.outError("logs/資料庫異常.txt", (Throwable) e);
             e.printStackTrace();
         }
     }
-    
+
     public final Collection<server.CashItemInfo.CashModInfo> getAllModInfo() {
         if (this.itemMods.isEmpty()) {
             this.refreshAllModInfo();
         }
         return this.itemMods.values();
     }
-    
+
     public final int[] getBestItems() {
         return CashItemFactory.bestItems;
     }
-    
+
     public void clearItems() {
         this.refreshAllModInfo();
     }
-    
+
     public int getSnFromId(final int itemId) {
-        return (int)Integer.valueOf(this.idLookup.get(Integer.valueOf(itemId)));
+        return (int) Integer.valueOf(this.idLookup.get(Integer.valueOf(itemId)));
     }
-    
+
     public final void clearCashShop() {
         this.itemStats.clear();
         this.itemPackage.clear();
@@ -203,18 +194,18 @@ public class CashItemFactory
         this.initialized = false;
         this.initialize();
     }
-    
+
     public final int getItemSN(final int itemid) {
         for (final Entry<Integer, CashItemInfo> ci : this.itemStats.entrySet()) {
-            if (((CashItemInfo)ci.getValue()).getId() == itemid) {
-                return ((CashItemInfo)ci.getValue()).getSN();
+            if (((CashItemInfo) ci.getValue()).getId() == itemid) {
+                return ((CashItemInfo) ci.getValue()).getSN();
             }
         }
         return 0;
     }
-    
+
     static {
         instance = new CashItemFactory();
-        bestItems = new int[] { 50100010, 50100010, 50100010, 50100010, 50100010 };
+        bestItems = new int[]{50100010, 50100010, 50100010, 50100010, 50100010};
     }
 }
