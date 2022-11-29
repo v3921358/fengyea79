@@ -12120,7 +12120,8 @@ for (int i = ((DefaultTableModel) (this.钓鱼物品.getModel())).getRowCount() 
     }
     
     private static boolean checkAuth() throws UnsupportedEncodingException {
-        String ip = getLocalIP() + "";
+        return true;
+        /*String ip = getLocalIP() + "";
         //授权码
         String code = authCode;
         if (code == null || code.equals("")) {
@@ -12137,7 +12138,7 @@ for (int i = ((DefaultTableModel) (this.钓鱼物品.getModel())).getRowCount() 
                 return true;
             }
         }
-        return false;
+        return false;*/
     }
     
     public static String getLocalIP() {
