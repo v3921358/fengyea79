@@ -9,13 +9,13 @@ public class DBConPool
     public static final int RETURN_GENERATED_KEYS = 1;
     public static String dbUser;
     public static String dbPass;
-    public static String dbIp;
+    public static String dbHost;
     public static String dbName;
     public static int dbport;
     
     public static void InitDB() {
         DBConPool.dbName = ServerProperties.getProperty("FengYeDuan.db.name", DBConPool.dbName);
-        DBConPool.dbIp = ServerProperties.getProperty("FengYeDuan.db.ip", DBConPool.dbIp);
+        DBConPool.dbHost = ServerProperties.getProperty("FengYeDuan.db.host", DBConPool.dbHost);
         DBConPool.dbport = ServerProperties.getProperty("FengYeDuan.db.port", DBConPool.dbport);
         DBConPool.dbUser = ServerProperties.getProperty("FengYeDuan.db.user", DBConPool.dbUser);
         DBConPool.dbPass = ServerProperties.getProperty("FengYeDuan.db.password", DBConPool.dbPass);
@@ -58,7 +58,7 @@ public class DBConPool
         DBConPool.dataSource = null;
         DBConPool.dbUser = "";
         DBConPool.dbPass = "root";
-        DBConPool.dbIp = "localhost";
+        DBConPool.dbHost = "localhost";
         DBConPool.dbName = "maplestory";
         DBConPool.dbport = 3306;
         InitDB();
