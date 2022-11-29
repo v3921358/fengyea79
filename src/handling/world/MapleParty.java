@@ -15,7 +15,6 @@ public class MapleParty implements Serializable
     private int id;
     private int averageLevel;
     public static String 开服名字;
-    public static String IP地址;
     public static int 互相伤害;
     public static int 通缉BOSS;
     public static int 地图回收;
@@ -196,7 +195,6 @@ public class MapleParty implements Serializable
     
     static {
         MapleParty.开服名字 = "冒险岛";
-        MapleParty.IP地址 = ServerProperties.getProperty("FengYeDuan.CustomIP");
         MapleParty.互相伤害 = 0;
         MapleParty.通缉BOSS = 0;
         MapleParty.地图回收 = 0;

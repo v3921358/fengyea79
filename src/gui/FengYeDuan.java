@@ -15588,12 +15588,6 @@ for (int i = ((DefaultTableModel) (this.钓鱼物品.getModel())).getRowCount() 
             @Override
             public void run() {
                new FengYeDuan().setVisible(true);
- System.out.println("[" + FileoutputUtil.CurrentReadable_Time() + "][★★★★★★★★★★★★★★★★★★★]");
- System.out.println("[" + FileoutputUtil.CurrentReadable_Time() + "][★相信未来相信自已 — 怪哥哥★★★★★]");
- System.out.println("[" + FileoutputUtil.CurrentReadable_Time() + "][★给你快乐的人,且行且珍惜 — 怪哥哥★]");
- System.out.println("[" + FileoutputUtil.CurrentReadable_Time() + "][★热爱生活,热爱世界 — 怪哥哥★★★★]");
- System.out.println("[" + FileoutputUtil.CurrentReadable_Time() + "][★★★★★★★★★★★★★★★★★★★]");
-
             }
         });
     }

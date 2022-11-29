@@ -37,7 +37,6 @@ public class LoginServer
     public static final void setup() {
         LoginServer.port = 8484;
         (LoginServer.acceptor = new ServerConnection((int)LoginServer.port, 0, 0)).run();
-        System.out.println("[正在启动] 服务器IP:" + MapleParty.IP地址);
         System.out.println("[正在启动] 登录端口:" + Short.toString(LoginServer.port) + "");
     }
     
