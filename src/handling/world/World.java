@@ -1193,7 +1193,7 @@ public class World
             Find.lock.readLock().lock();
             Integer ret;
             try {
-                ret = Integer.valueOf(Find.idToChannel.get(Integer.valueOf(id)));
+                ret = Find.idToChannel.get(id);
             }
             finally {
                 Find.lock.readLock().unlock();
